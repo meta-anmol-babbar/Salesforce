@@ -1,56 +1,38 @@
-public class ContactIds {
-    
-    public static void setContactIds(ID contactId)
+public class ContactIds 
+{    
+    public static String setContactIds(ID contactId)
     {
-        List<Contact> listContacts = [SELECT Account.Id, Account.ContactIDs__c FROM Contact WHERE id =: contactId];
-        ID accountId = listContacts.get(0).Account.Id;
-        String resultantContactId = listContacts.get(0).Account.ContactIDs__c;
-        if(resultantContactId == null)
+        Contact contactIdAccount = [SELECT Account.Id FROM Contact WHERE id =: contactId];
+        Account relatedAccount = [Select Id , ContactIDs__c, ( Select Id From Contacts) From Account Where Id =: contactIdAccount.Account.Id]; 
+        
+        //List<Contact> allAccountRelatedContacts = [Select Id From Contact Where Contact.AccountId =: relatedAccount.Id];
+        if(String.isBlank(relatedAccount.ContactIDs__c))
         {
-            makeList(contactId);
+            System.debug('true');
+            relatedAccount.ContactIDs__c = '';
+            Integer numberOfAccounts = relatedAccount.Contacts.size()-1;
+            
+            for( Integer i=0 ; i < numberOfAccounts; i++)
+            {
+                system.debug(relatedAccount.Contacts[i]); 
+                relatedAccount.ContactIDs__c += relatedAccount.Contacts[i].Id + ' , ' ;
+            }
+            relatedAccount.ContactIDs__c += relatedAccount.Contacts[numberOfAccounts].Id;
         }
         else
         {
-            updateList(contactId);
-        }
-    }
-    
-    private static void makeList(ID contactId)
-    {
-        String result = '';
-        List<Account> listAccounts = [SELECT id, (SELECT id FROM Contacts)
-                                      FROM Account WHERE id IN (SELECT AccountId FROM Contact WHERE id=:contactId)];
-        for(Integer i = 0; i < listAccounts.get(0).Contacts.size(); i++)
-        {
-            if(i == listAccounts.get(0).Contacts.size()-1)
+            System.debug('false');
+            if((relatedAccount.ContactIDs__c).containsAny(contactId))
             {
-                result = result + listAccounts.get(0).Contacts.get(i).id;
+            System.debug('');
             }
             else
             {
-                result = result + listAccounts.get(0).Contacts.get(i).id + ' , ';
+                relatedAccount.ContactIDs__c += ' , ' + contactId;
             }
         }
-        Account acc = [SELECT id, Name,ContactIDs__c FROM Account WHERE id =: listAccounts.get(0).id][0];
-        acc.ContactIDs__c = result;
-        upsert acc;
-    }
-    
-    
-    private static void updateList(ID contactId)
-    {
-        List<Account> listAccounts = [SELECT id, ContactIds__c FROM Account WHERE id IN (SELECT AccountId FROM Contact WHERE id =: contactId)];
-        String ContactIds = listAccounts.get(0).ContactIds__c;
-        if(!ContactIds.contains(String.valueOf(contactId)))
-        {
-            ContactIds = ContactIds + ' , ' + String.valueOf(contactId);
-            Account acc = [SELECT id, Name,ContactIDs__c FROM Account WHERE id =: listAccounts.get(0).id][0];
-            acc.ContactIDs__c = ContactIds;
-            upsert acc;
-        }
-        else
-        {
-            System.debug('Id Already present in the list');
-        }
+        
+        upsert relatedAccount;
+        return relatedAccount.ContactIDs__c ;
     }
 }
