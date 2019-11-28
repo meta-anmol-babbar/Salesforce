@@ -1,0 +1,22 @@
+<apex:page controller="SelectBillToContactController">
+    
+    <apex:form >
+        <apex:selectRadio value="{!record}">
+            <apex:selectOptions value="{!items}"/>
+        </apex:selectRadio><p/>
+        <apex:commandButton value="Save" action="{!save}" rerender="out" status="status"/>
+        <apex:commandButton value="Clear" action="{!Clear}" />
+        <apex:commandButton value="Cancel" action="{!Cancel}"/>
+    </apex:form>
+    <apex:outputPanel id="out">
+        <apex:actionstatus id="status" startText="testing..."> 
+            <apex:facet name="stop"> 
+                <apex:outputPanel > 
+                    <p>You have selected:</p> 
+                    <apex:outputText value="{!record}"/> 
+                </apex:outputPanel> 
+            </apex:facet> 
+        </apex:actionstatus> 
+    </apex:outputPanel> 
+    <apex:pageMessages ></apex:pageMessages>    
+</apex:page>

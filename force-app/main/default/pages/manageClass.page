@@ -1,0 +1,40 @@
+<apex:page controller="ManageClassController">
+    <apex:form >
+        
+        <apex:pageBlock >
+            <apex:pageBlockTable value="{!classes}" var="cla">
+                <apex:column value="{!cla.Id}" />
+                <apex:column value="{!cla.Name}" />
+                <apex:column value="{!cla.Name__c}" />
+                <apex:column value="{!cla.MaxSize__c}"/>
+                <apex:column value="{!cla.Class_Teacher__c}"/>
+                <apex:column >
+                    <apex:commandLink value=" Edit " action="{!edit}">
+                        <apex:param name="stuClassId" assignTo="{!stuClassId}" value="{!cla.Id}"/>
+                    </apex:commandLink>
+                    &nbsp; &nbsp;
+                    <apex:commandLink value=" Delete " action="{!deleteCla}">
+                        <apex:param name="stuClassIdToDel" assignTo="{!stuClassId}" value="{!cla.Id}"/>
+                    </apex:commandLink>
+                </apex:column>
+                
+            </apex:pageBlockTable>
+            <!-- Displaying the edit details section -->
+            <apex:pageBlockSection rendered="{! editBlock}" columns="1">
+                <h2>
+                    Edit Class Details...
+                </h2>
+                <apex:pageBlockTable value="{!stuClassDetails}" var="stu" >
+                    <apex:column ><apex:inputField value="{!stu.Name}"/></apex:column>
+                    <apex:column ><apex:inputField value="{!stu.Name__c}"/></apex:column> 
+                    <apex:column ><apex:inputField value="{!stu.MaxSize__c}"/></apex:column>
+                    <apex:column ><apex:inputField value="{!stu.Class_Teacher__c}"/></apex:column>
+                </apex:pageBlockTable>
+                
+                <apex:commandButton value="Save" action="{!saveDetails}"/>
+                
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

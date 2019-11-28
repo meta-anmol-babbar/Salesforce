@@ -1,0 +1,18 @@
+<apex:page standardController="Contact" extensions="InLineController">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection title="{!cRec.RecordType.Name}" collapsible="false" columns="2">
+                <apex:outputField value="{!cRec.OwnerId}"/><br/>
+                <apex:outputField value="{!cRec.name}"/><br/>
+                <apex:outputField value="{!cRec.AccountId}"/><br/>
+                <apex:outputField value="{!cRec.Title}"/><br/>
+                <apex:outputField value="{!cRec.Department}"/><br/>
+                <apex:outputField value="{!cRec.Phone}"/><br/>
+                <apex:outputField value="{!cRec.HomePhone}"/><br/>
+                <apex:outputField value="{!cRec.MobilePhone}"/><br/>
+                <apex:outputField value="{!cRec.OtherPhone}"/><br/>
+                <apex:outputField value="{!cRec.Fax}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

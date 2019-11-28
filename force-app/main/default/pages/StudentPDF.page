@@ -1,0 +1,14 @@
+<apex:page renderAs="pdf" controller="StudentPDFController" action="{!savePdf}">
+    
+    <apex:sectionHeader title="Student Details" subtitle="Attach a PDF"/>   
+    <apex:pageBlock >
+        <apex:pageBlockSection columns="1">
+            Last Name : {! Student.Last_Name__c} <br />
+            Name : {! Student.Name} <br />
+            Class : {! Student.Class__r.Name} <br />
+            Age : {! Student.Age__c} <br />
+            DOB : {! Student.DOB__c} <br />
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+</apex:page>
