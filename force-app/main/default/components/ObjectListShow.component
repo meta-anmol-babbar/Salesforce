@@ -1,0 +1,35 @@
+<apex:component controller="ObjectListShowController">
+    <apex:attribute name="query" type="String" description="Query to be exexcuted" assignTo="{!queryToBeExecuted}"/>
+    <apex:outputPanel id="recordsBlock">
+        <apex:form >
+            <apex:pageBlock title="Query Results">
+                <apex:pageMessages />
+                <apex:pageBlockTable value="{!recordsList}" var="rec">a
+                    <apex:repeat value="{!fieldsList}" var="field">
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandLink action="{!sortByMethod}" reRender="recordsBlock">{!field}
+                                    <apex:param assignTo="{!sortBy}" name="sortBy" value="{!field}"/>                       			
+                                </apex:commandLink>
+                            </apex:facet>
+                            {!rec[field]}                        
+                        </apex:column>
+                    </apex:repeat>               
+                </apex:pageBlockTable>
+                <!-- Pagination -->
+                <apex:commandButton value="First" action="{!setCon.first}" disabled="{!NOT(setCon.HasPrevious)}"/>
+                &nbsp; &nbsp;
+                <apex:commandButton value="Previous" action="{!setCon.previous}" disabled="{!NOT(setCon.HasPrevious)}"/>
+                &nbsp;&nbsp;
+                <apex:commandButton value="Next" action="{!setCon.Next}" disabled="{!NOT(setCon.HasNext)}"/>
+                &nbsp;&nbsp;
+                <apex:commandButton value="Last" action="{!setCon.last}" disabled="{!NOT(setCon.HasNext)}"/>
+                &nbsp;&nbsp;
+                <apex:outputText value="Page : {!setCon.pageNumber} of {!CEILING(setCon.ResultSize/setCon.PageSize)}" />
+                &nbsp;&nbsp; 
+                <apex:inputText value="{!DesiredPage}"/> &nbsp;
+                <apex:commandButton value="Go" action="{!jumpToPage}" rerender="recordsBlock"/>
+            </apex:pageBlock>
+        </apex:form>
+    </apex:outputPanel>
+</apex:component>

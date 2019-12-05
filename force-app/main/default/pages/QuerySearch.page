@@ -1,0 +1,13 @@
+<apex:Page controller="SetQueryInput"  >
+    <apex:form >
+        <apex:pageBlock title="Query Editor">
+            <apex:pageBlockSection >
+                <apex:inputTextArea value="{!query}" html-placeholder="Enter Query" rows="2" cols="100"/>
+                <apex:commandButton value="Execute Query" action="{!execute}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    <apex:outputPanel id="Show_Query_Result_Area">
+        <c:ObjectListShow query="{!query}" rendered="{!showQueryResultsArea}"/>
+    </apex:outputPanel>
+</apex:Page>
